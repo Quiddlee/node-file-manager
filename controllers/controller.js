@@ -1,8 +1,9 @@
 import { join } from 'path';
-import { open, readdir } from 'fs/promises';
+import { open, readdir, rename } from 'fs/promises';
 import { chdir, cwd } from 'process';
 import { createReadStream } from 'node:fs';
 import { ERROR } from '../const.js';
+import resolvePath from '../lib/helpers/resolvePath.js';
 
 // TODO: handle erros
 
@@ -35,14 +36,7 @@ export const ls = async () => {
 };
 
 export const cat = (path) => {
-  let filePath;
-  const isAbsolutePath = path.startsWith(cwd());
-
-  if (isAbsolutePath) {
-    filePath = path;
-  } else {
-    filePath = join(cwd(), path);
-  }
+  const filePath = resolvePath(path);
 
   createReadStream(filePath, { encoding: 'utf-8' })
       .on('data', (chunk) => {
@@ -54,6 +48,16 @@ export const cat = (path) => {
 export const add = async (name) => {
   try {
     await open(name, 'w');
+  } catch (e) {
+    console.log(ERROR);
+  }
+};
+
+export const rn = async (oldPath, newPath) => {
+  try {
+    const oldFile = resolvePath(oldPath);
+    const newFile = resolvePath(newPath);
+    await rename(oldFile, newFile);
   } catch (e) {
     console.log(ERROR);
   }
