@@ -2,10 +2,11 @@ import { join } from 'path';
 import { open, readdir, rename } from 'fs/promises';
 import { chdir, cwd } from 'process';
 import { createReadStream } from 'node:fs';
-import { ERROR } from '../const.js';
 import resolvePath from '../lib/helpers/resolvePath.js';
+import { ERROR } from '../const.js';
+import paint from '../lib/helpers/paint.js';
 
-// TODO: handle erros
+// TODO: handle errors
 
 export const up = () => {
   const dirUp = join(cwd(), '..');
@@ -14,7 +15,11 @@ export const up = () => {
 
 export const cd = (path) => {
   const newDir = join(cwd(), path);
-  chdir(newDir);
+  try {
+    chdir(newDir);
+  } catch (e) {
+    console.log(paint(ERROR, 'red', 'bold'));
+  }
 };
 
 export const ls = async () => {
@@ -42,14 +47,14 @@ export const cat = (path) => {
       .on('data', (chunk) => {
         console.log(chunk.toString());
       })
-      .on('error', () => console.log(ERROR));
+      .on('error', () => console.log(paint(ERROR, 'red', 'bold')));
 };
 
 export const add = async (name) => {
   try {
     await open(name, 'w');
   } catch (e) {
-    console.log(ERROR);
+    console.log(paint(ERROR, 'red', 'bold'));
   }
 };
 
@@ -59,6 +64,6 @@ export const rn = async (oldPath, newPath) => {
     const newFile = resolvePath(newPath);
     await rename(oldFile, newFile);
   } catch (e) {
-    console.log(ERROR);
+    console.log(paint(ERROR, 'red', 'bold'));
   }
 };

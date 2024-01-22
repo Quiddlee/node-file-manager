@@ -6,6 +6,7 @@ import * as os from 'os';
 import { WAITING } from './const.js';
 import { add, cat, cd, ls, rn, up } from './controllers/controller.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
+import paint from './lib/helpers/paint.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -41,8 +42,9 @@ rl.on('line', async (line) => {
   }
 
   logWorkingDirPath();
+  console.log(paint(WAITING, 'cyan', 'italic'));
 });
 
 greetings();
 logWorkingDirPath();
-console.log(WAITING);
+console.log(paint(WAITING, 'cyan', 'italic'));
