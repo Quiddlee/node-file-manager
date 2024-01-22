@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readdir } from 'fs/promises';
+import { open, readdir } from 'fs/promises';
 import { chdir, cwd } from 'process';
 import { createReadStream } from 'node:fs';
 import { ERROR } from '../const.js';
@@ -49,4 +49,12 @@ export const cat = (path) => {
         console.log(chunk.toString());
       })
       .on('error', () => console.log(ERROR));
+};
+
+export const add = async (name) => {
+  try {
+    await open(name, 'w');
+  } catch (e) {
+    console.log(ERROR);
+  }
 };
