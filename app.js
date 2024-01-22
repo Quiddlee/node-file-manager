@@ -4,7 +4,7 @@ import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
 import { WAITING } from './const.js';
-import { cd, up } from './controllers/controller.js';
+import { cd, ls, up } from './controllers/controller.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -15,9 +15,14 @@ rl.on('line', async (line) => {
     case 'up':
       up();
       break;
+
     case line.startsWith('cd'):
       const specifiedPath = line.split(' ').at(1);
       cd(specifiedPath);
+      break;
+
+    case 'ls':
+      await ls();
       break;
   }
 
