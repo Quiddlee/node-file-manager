@@ -1,8 +1,8 @@
 import { GREETINGS } from '../const.js';
+import getUsername from '../lib/helpers/getUsername.js';
 
 const greetings = () => {
-  const userArg = process.argv.slice(2).at(0);
-  const username = userArg.slice(userArg.lastIndexOf('=') + 1);
+  const username = getUsername();
   console.log(`${ GREETINGS }, ${ username }!`);
 };
 
