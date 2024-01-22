@@ -4,25 +4,31 @@ import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
 import { WAITING } from './const.js';
-import { cd, ls, up } from './controllers/controller.js';
+import { cat, cd, ls, up } from './controllers/controller.js';
+import getCmdPart from './lib/helpers/getCmdPart.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 process.chdir(os.homedir());
 process.on('beforeExit', exit);
 rl.on('line', async (line) => {
-  switch (line) {
+  const userCommand = getCmdPart(line);
+
+  switch (userCommand) {
     case 'up':
       up();
       break;
 
-    case line.startsWith('cd'):
-      const specifiedPath = line.split(' ').at(1);
-      cd(specifiedPath);
+    case 'cd':
+      cd(getCmdPart(line, 1));
       break;
 
     case 'ls':
       await ls();
+      break;
+
+    case 'cat':
+      cat(getCmdPart(line, 1));
       break;
   }
 
