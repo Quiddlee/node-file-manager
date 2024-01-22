@@ -3,6 +3,7 @@ import exit from './views/exit.js';
 import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
+import { WAITING } from './const.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -15,3 +16,4 @@ rl.on('line', (l) => {
 
 greetings();
 logWorkingDirPath();
+console.log(WAITING);
