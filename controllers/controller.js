@@ -17,7 +17,11 @@ export const ls = async () => {
     withFileTypes: true
   });
 
-  const tableData = dirInner.map((elem) => {
+  const dirs = dirInner.filter(elem => elem.isDirectory()).sort();
+  const files = dirInner.filter(elem => elem.isFile()).sort();
+  const sortedInner = [ ...dirs, ...files ];
+
+  const tableData = sortedInner.map((elem) => {
     const name = elem.name;
     const type = elem.isFile() ? 'file' : 'directory';
     return { name, type };
