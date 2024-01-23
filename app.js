@@ -8,7 +8,7 @@ import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesControl
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
 import { architecture, cpus, eol, homedir, username } from './controllers/osController.js';
-import { calcHash } from './controllers/externalController.js';
+import { calcHash, compress } from './controllers/externalController.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -81,6 +81,10 @@ rl.on('line', async (line) => {
   switch (userFileCommand) {
     case 'hash':
       calcHash(getCmdPart(line, 1));
+      break;
+
+    case 'compress':
+      compress(getCmdPart(line, 1), getCmdPart(line, 2));
       break;
   }
 
