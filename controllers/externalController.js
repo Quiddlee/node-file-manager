@@ -48,3 +48,7 @@ export const decompress = (oldPath, newPath) => {
     logError();
   }
 };
+
+export const exit = () => {
+  process.exit();
+};
