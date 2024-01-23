@@ -3,7 +3,7 @@ import exit from './views/exit.js';
 import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
-import { WAITING } from './const.js';
+import { EXIT_COMMAND, WAITING } from './const.js';
 import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesController.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
@@ -13,12 +13,12 @@ import { calcHash, compress, decompress } from './controllers/externalController
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 process.chdir(os.homedir());
-process.on('beforeExit', exit);
+process.on('exit', exit);
 rl.on('line', async (line) => {
-  const userFileCommand = getCmdPart(line);
+  const userFilesCommand = getCmdPart(line);
   const userOsCommand = getCmdPart(line, 1)?.slice(2);
 
-  switch (userFileCommand) {
+  switch (userFilesCommand) {
     case 'up':
       up();
       break;
@@ -78,7 +78,7 @@ rl.on('line', async (line) => {
       break;
   }
 
-  switch (userFileCommand) {
+  switch (userFilesCommand) {
     case 'hash':
       calcHash(getCmdPart(line, 1));
       break;
@@ -89,6 +89,10 @@ rl.on('line', async (line) => {
 
     case 'decompress':
       decompress(getCmdPart(line, 1), getCmdPart(line, 2));
+      break;
+
+    case EXIT_COMMAND:
+      process.exit();
       break;
   }
 
