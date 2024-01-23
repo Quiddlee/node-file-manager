@@ -7,7 +7,7 @@ import { WAITING } from './const.js';
 import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesController.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
-import { cpus, eol, homedir } from './controllers/osController.js';
+import { cpus, eol, homedir, username } from './controllers/osController.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -66,6 +66,10 @@ rl.on('line', async (line) => {
 
     case 'homedir':
       homedir();
+      break;
+
+    case 'username':
+      username();
       break;
   }
 

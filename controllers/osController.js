@@ -25,3 +25,7 @@ export const cpus = () => {
 export const homedir = () => {
   console.log(os.homedir());
 };
+
+export const username = () => {
+  console.log(os.userInfo().username);
+};
