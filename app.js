@@ -7,15 +7,17 @@ import { WAITING } from './const.js';
 import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesController.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
+import { eol } from './controllers/osController.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 process.chdir(os.homedir());
 process.on('beforeExit', exit);
 rl.on('line', async (line) => {
-  const userCommand = getCmdPart(line);
+  const userFileCommand = getCmdPart(line);
+  const userOsCommand = getCmdPart(line, 1)?.slice(2);
 
-  switch (userCommand) {
+  switch (userFileCommand) {
     case 'up':
       up();
       break;
@@ -50,6 +52,12 @@ rl.on('line', async (line) => {
 
     case 'rm':
       rm(getCmdPart(line, 1), getCmdPart(line, 2));
+      break;
+  }
+
+  switch (userOsCommand) {
+    case 'EOL':
+      eol();
       break;
   }
 
