@@ -3,12 +3,13 @@ import exit from './views/exit.js';
 import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
-import { EXIT_COMMAND, WAITING } from './const.js';
+import { EXIT_COMMAND, INVALID_INPUT, WAITING } from './const.js';
 import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesController.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
 import { architecture, cpus, eol, homedir, username } from './controllers/osController.js';
 import { calcHash, compress, decompress } from './controllers/externalController.js';
+import logError from './views/logError.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -17,6 +18,7 @@ process.on('exit', exit);
 rl.on('line', async (line) => {
   const userFilesCommand = getCmdPart(line);
   const userOsCommand = getCmdPart(line, 1)?.slice(2);
+  let wrongCounter = 0;
 
   switch (userFilesCommand) {
     case 'up':
@@ -54,6 +56,9 @@ rl.on('line', async (line) => {
     case 'rm':
       rm(getCmdPart(line, 1), getCmdPart(line, 2));
       break;
+
+    default:
+      wrongCounter++;
   }
 
   switch (userOsCommand) {
@@ -76,6 +81,9 @@ rl.on('line', async (line) => {
     case 'architecture':
       architecture();
       break;
+
+    default:
+      wrongCounter++;
   }
 
   switch (userFilesCommand) {
@@ -94,7 +102,12 @@ rl.on('line', async (line) => {
     case EXIT_COMMAND:
       process.exit();
       break;
+
+    default:
+      wrongCounter++;
   }
+
+  if (wrongCounter === 3) logError(INVALID_INPUT);
 
   logWorkingDirPath();
   console.log(paint(WAITING, 'cyan', 'italic'));
