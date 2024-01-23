@@ -1,6 +1,6 @@
 import getUsername from '../lib/helpers/getUsername.js';
-import { EXIT } from '../const.js';
 import paint from '../lib/helpers/paint.js';
+import { EXIT } from '../lib/const/const.js';
 
 const logExit = () => {
   const username = getUsername();

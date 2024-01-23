@@ -3,13 +3,13 @@ import logExit from './views/logExit.js';
 import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
-import { INVALID_INPUT, WAITING } from './const.js';
 import * as filesController from './controllers/filesController.js';
 import * as osController from './controllers/osController.js';
 import * as externalController from './controllers/externalController.js';
 import paint from './lib/helpers/paint.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import logError from './views/logError.js';
+import { INVALID_INPUT, WAITING } from './lib/const/const.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 

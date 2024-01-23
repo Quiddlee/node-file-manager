@@ -1,6 +1,6 @@
 import getUsername from '../lib/helpers/getUsername.js';
 import paint from '../lib/helpers/paint.js';
-import { GREETINGS } from '../const.js';
+import { GREETINGS } from '../lib/const/const.js';
 
 const greetings = () => {
   const username = getUsername();
