@@ -4,7 +4,7 @@ import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
 import { WAITING } from './const.js';
-import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/controller.js';
+import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesController.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
 
