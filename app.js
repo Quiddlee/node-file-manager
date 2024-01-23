@@ -7,7 +7,7 @@ import { WAITING } from './const.js';
 import { add, cat, cd, cp, ls, mv, rm, rn, up } from './controllers/filesController.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
-import { cpus, eol, homedir, username } from './controllers/osController.js';
+import { architecture, cpus, eol, homedir, username } from './controllers/osController.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -70,6 +70,10 @@ rl.on('line', async (line) => {
 
     case 'username':
       username();
+      break;
+
+    case 'architecture':
+      architecture();
       break;
   }
 

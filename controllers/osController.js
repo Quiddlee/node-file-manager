@@ -29,3 +29,7 @@ export const homedir = () => {
 export const username = () => {
   console.log(os.userInfo().username);
 };
+
+export const architecture = () => {
+  console.log(os.arch());
+};
