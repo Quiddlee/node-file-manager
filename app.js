@@ -1,4 +1,4 @@
-import greetings from './views/grettings.js';
+import logGreetings from './views/logGrettings.js';
 import logExit from './views/logExit.js';
 import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
@@ -40,6 +40,6 @@ rl.on('line', (line) => {
   console.log(paint(WAITING, 'cyan', 'italic'));
 });
 
-greetings();
+logGreetings();
 logWorkingDirPath();
 console.log(paint(WAITING, 'cyan', 'italic'));
