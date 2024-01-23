@@ -1,9 +1,8 @@
-import { join } from 'path';
+import { basename, join, resolve } from 'path';
 import { open, readdir, rename } from 'fs/promises';
 import { chdir, cwd } from 'process';
-import { createReadStream } from 'node:fs';
-import resolvePath from '../lib/helpers/resolvePath.js';
-import { ERROR } from '../const.js';
+import { createReadStream, createWriteStream } from 'node:fs';
+import logError from '../views/logError.js';
 import paint from '../lib/helpers/paint.js';
 
 // TODO: handle errors
@@ -18,7 +17,7 @@ export const cd = (path) => {
   try {
     chdir(newDir);
   } catch (e) {
-    console.log(paint(ERROR, 'red', 'bold'));
+    logError();
   }
 };
 
@@ -41,29 +40,40 @@ export const ls = async () => {
 };
 
 export const cat = (path) => {
-  const filePath = resolvePath(path);
+  const filePath = resolve(path);
 
   createReadStream(filePath, { encoding: 'utf-8' })
       .on('data', (chunk) => {
-        console.log(chunk.toString());
+        console.log(paint(chunk.toString(), 'green', 'italic'));
       })
-      .on('error', () => console.log(paint(ERROR, 'red', 'bold')));
+      .on('error', logError);
 };
 
 export const add = async (name) => {
   try {
     await open(name, 'w');
   } catch (e) {
-    console.log(paint(ERROR, 'red', 'bold'));
+    logError();
   }
 };
 
 export const rn = async (oldPath, newPath) => {
   try {
-    const oldFile = resolvePath(oldPath);
-    const newFile = resolvePath(newPath);
+    const oldFile = resolve(oldPath);
+    const newFile = resolve(newPath);
     await rename(oldFile, newFile);
   } catch (e) {
-    console.log(paint(ERROR, 'red', 'bold'));
+    logError();
   }
+};
+
+export const cp = async (oldPath, newPath) => {
+  const oldFile = resolve(oldPath);
+  const fileName = basename(oldFile);
+  const newFile = join(resolve(newPath), fileName);
+
+  createReadStream(oldFile)
+      .on('error', logError)
+      .pipe(createWriteStream(newFile))
+      .on('error', logError);
 };
