@@ -4,7 +4,7 @@ import logWorkingDirPath from './views/logWorkingDirPath.js';
 import readline from 'readline';
 import * as os from 'os';
 import { WAITING } from './const.js';
-import { add, cat, cd, cp, ls, rn, up } from './controllers/controller.js';
+import { add, cat, cd, cp, ls, mv, rn, up } from './controllers/controller.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import paint from './lib/helpers/paint.js';
 
@@ -43,6 +43,9 @@ rl.on('line', async (line) => {
     case 'cp':
       await cp(getCmdPart(line, 1), getCmdPart(line, 2));
       break;
+
+    case 'mv':
+      mv(getCmdPart(line, 1), getCmdPart(line, 2));
   }
 
   logWorkingDirPath();

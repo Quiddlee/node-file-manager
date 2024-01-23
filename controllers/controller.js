@@ -1,5 +1,5 @@
 import { basename, join, resolve } from 'path';
-import { open, readdir, rename } from 'fs/promises';
+import { open, readdir, rename, rm } from 'fs/promises';
 import { chdir, cwd } from 'process';
 import { createReadStream, createWriteStream } from 'node:fs';
 import logError from '../views/logError.js';
@@ -67,13 +67,20 @@ export const rn = async (oldPath, newPath) => {
   }
 };
 
-export const cp = async (oldPath, newPath) => {
+export const cp = (oldPath, newPath) => {
   const oldFile = resolve(oldPath);
   const fileName = basename(oldFile);
   const newFile = join(resolve(newPath), fileName);
 
-  createReadStream(oldFile)
+  return createReadStream(oldFile)
       .on('error', logError)
       .pipe(createWriteStream(newFile))
       .on('error', logError);
+};
+
+export const mv = (oldPath, newPath) => {
+  cp(oldPath, newPath)
+      .on('finish', () => {
+        rm(oldPath);
+      });
 };
