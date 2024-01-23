@@ -1,5 +1,5 @@
 import { basename, join, resolve } from 'path';
-import { open, readdir, rename, rm } from 'fs/promises';
+import fs, { open, readdir, rename, } from 'fs/promises';
 import { chdir, cwd } from 'process';
 import { createReadStream, createWriteStream } from 'node:fs';
 import logError from '../views/logError.js';
@@ -81,6 +81,10 @@ export const cp = (oldPath, newPath) => {
 export const mv = (oldPath, newPath) => {
   cp(oldPath, newPath)
       .on('finish', () => {
-        rm(oldPath);
+        void fs.rm(oldPath);
       });
+};
+
+export const rm = (path) => {
+  void fs.rm(path);
 };
