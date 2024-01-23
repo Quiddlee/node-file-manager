@@ -21,3 +21,7 @@ export const cpus = () => {
 
   console.table(tableData);
 };
+
+export const homedir = () => {
+  console.log(os.homedir());
+};
