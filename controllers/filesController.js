@@ -4,15 +4,23 @@ import { chdir, cwd } from 'process';
 import { createReadStream, createWriteStream } from 'node:fs';
 import logError from '../views/logError.js';
 import paint from '../lib/helpers/paint.js';
+import { INVALID_INPUT } from '../lib/const/const.js';
 
 export const up = () => {
   const dirUp = join(cwd(), '..');
-  chdir(dirUp);
+
+  try {
+    chdir(dirUp);
+  } catch (e) {
+    logError();
+  }
 };
 
 export const cd = (path) => {
+  if (!path) return logError(INVALID_INPUT);
+
   try {
-    const newDir = join(cwd(), path);
+    const newDir = resolve(path);
     chdir(newDir);
   } catch (e) {
     logError();
@@ -20,24 +28,30 @@ export const cd = (path) => {
 };
 
 export const ls = async () => {
-  const dirInner = await readdir(cwd(), {
-    withFileTypes: true
-  });
+  try {
+    const dirInner = await readdir(cwd(), {
+      withFileTypes: true
+    });
 
-  const dirs = dirInner.filter(elem => elem.isDirectory()).sort();
-  const files = dirInner.filter(elem => elem.isFile()).sort();
-  const sortedInner = [ ...dirs, ...files ];
+    const dirs = dirInner.filter(elem => elem.isDirectory()).sort();
+    const files = dirInner.filter(elem => elem.isFile()).sort();
+    const sortedInner = [ ...dirs, ...files ];
 
-  const tableData = sortedInner.map((elem) => {
-    const name = elem.name;
-    const type = elem.isFile() ? 'file' : 'directory';
-    return { name, type };
-  });
+    const tableData = sortedInner.map((elem) => {
+      const name = elem.name;
+      const type = elem.isFile() ? 'file' : 'directory';
+      return { name, type };
+    });
 
-  console.table(tableData);
+    console.table(tableData);
+  } catch (e) {
+    logError();
+  }
 };
 
 export const cat = (path) => {
+  if (!path) return logError(INVALID_INPUT);
+
   try {
     const filePath = resolve(path);
 
@@ -45,13 +59,15 @@ export const cat = (path) => {
         .on('data', (chunk) => {
           console.log(paint(chunk.toString(), 'green', 'italic'));
         })
-        .on('error', logError);
+        .on('error', () => logError());
   } catch (e) {
     logError();
   }
 };
 
 export const add = async (name) => {
+  if (!name) return logError(INVALID_INPUT);
+
   try {
     await open(name, 'w');
   } catch (e) {
@@ -60,6 +76,8 @@ export const add = async (name) => {
 };
 
 export const rn = async (oldPath, newPath) => {
+  if (!oldPath || !newPath) return logError(INVALID_INPUT);
+
   try {
     const oldFile = resolve(oldPath);
     const newFile = resolve(newPath);
@@ -70,27 +88,40 @@ export const rn = async (oldPath, newPath) => {
 };
 
 export const cp = (oldPath, newPath) => {
+  if (!oldPath || !newPath) return logError(INVALID_INPUT);
+
   try {
     const oldFile = resolve(oldPath);
     const fileName = basename(oldFile);
     const newFile = join(resolve(newPath), fileName);
 
     return createReadStream(oldFile)
-        .on('error', logError)
+        .on('error', () => logError())
         .pipe(createWriteStream(newFile))
-        .on('error', logError);
+        .on('error', () => logError());
+  } catch (e) {
+    logError();
+  }
+};
+
+export const rm = async (path) => {
+  if (!path) return logError(INVALID_INPUT);
+
+  try {
+    await fs.rm(resolve(path));
   } catch (e) {
     logError();
   }
 };
 
 export const mv = (oldPath, newPath) => {
-  cp(oldPath, newPath)
-      ?.on('finish', () => {
-        void fs.rm(oldPath);
-      });
-};
+  if (!oldPath || !newPath) return logError(INVALID_INPUT);
 
-export const rm = (path) => {
-  void fs.rm(path);
+  const oldDest = resolve(oldPath);
+  const newDest = resolve(newPath);
+
+  cp(oldDest, newDest)
+      ?.on('finish', () => {
+        rm(oldPath);
+      });
 };

@@ -19,6 +19,7 @@ rl.on('line', (line) => {
   const userFilesCommand = getCmdPart(line);
   const filesOperation = filesController[userFilesCommand];
 
+  // slicing command e.g. --homedir to get just homedir. toLowerCase() in order to make all command to be the same e.g. EOL -> eol
   const userOsCommand = getCmdPart(line, 1)?.slice(2)?.toLowerCase();
   const osOperation = osController[userOsCommand];
 
