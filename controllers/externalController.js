@@ -4,7 +4,7 @@ import { createHash } from 'crypto';
 import { createBrotliCompress, createBrotliDecompress } from 'zlib';
 import logError from '../views/logError.js';
 
-export const calcHash = (path) => {
+export const hash = (path) => {
   try {
     createReadStream(resolve(path))
         .on('error', logError)
