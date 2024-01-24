@@ -19,7 +19,7 @@ rl.on('line', (line) => {
   const userFilesCommand = getCmdPart(line);
   const filesOperation = filesController[userFilesCommand];
 
-  const userOsCommand = getCmdPart(line, 1)?.slice(2);
+  const userOsCommand = getCmdPart(line, 1)?.slice(2)?.toLowerCase();
   const osOperation = osController[userOsCommand];
 
   // replace the dot . in order to ensure that the .exit command will work as expected
