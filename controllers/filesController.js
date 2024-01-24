@@ -86,7 +86,7 @@ export const cp = (oldPath, newPath) => {
 
 export const mv = (oldPath, newPath) => {
   cp(oldPath, newPath)
-      .on('finish', () => {
+      ?.on('finish', () => {
         void fs.rm(oldPath);
       });
 };
