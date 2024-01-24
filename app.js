@@ -23,7 +23,7 @@ rl.on('line', (line) => {
   const userOsCommand = getCmdPart(line, 1)?.slice(2)?.toLowerCase();
   const osOperation = osController[userOsCommand];
 
-  // replace the dot . in order to ensure that the .exit command will work as expected
+  // replace the dot . in order to ensure that the .exit command would work as expected
   const externalOperation = externalController[userFilesCommand.replace('.', '')];
 
   const oldPath = getCmdPart(line, 1);
