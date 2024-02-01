@@ -31,8 +31,8 @@ rl.on('line', async (line) => {
   if (!filesOperation && !osOperation && !externalOperation) {
     logError(INVALID_INPUT);
   } else {
-    await filesOperation?.(oldPath, newPath);
     osOperation?.();
+    await filesOperation?.(oldPath, newPath);
     await externalOperation?.(oldPath, newPath);
   }
 
