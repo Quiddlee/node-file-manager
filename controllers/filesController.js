@@ -6,6 +6,11 @@ import paint from '../lib/helpers/paint.js';
 import { INVALID_INPUT } from '../lib/const/const.js';
 import { createReadStream, createWriteStream } from 'fs';
 
+/**
+ * Goes up to the directory tree
+ *
+ * @example up() - home/folder/folder2 -> home/folder
+ */
 export const up = () => {
   const dirUp = join(cwd(), '..');
 
@@ -16,6 +21,12 @@ export const up = () => {
   }
 };
 
+/**
+ * Changes the current working directory to the specified path.
+ * @param {string} path - The path to change to.
+ * @returns {void | never} Nothing.
+ * @throws {Error} If the path is invalid or the change fails.
+ */
 export const cd = (path) => {
   if (!path) return logError(INVALID_INPUT);
 
@@ -27,6 +38,11 @@ export const cd = (path) => {
   }
 };
 
+/**
+ * Lists the files and directories in the current working directory.
+ * @returns {Promise<void>} A promise that resolves when the operation is done.
+ * @throws {Error} If the operation fails.
+ */
 export const ls = async () => {
   try {
     const dirInner = await readdir(cwd(), {
@@ -49,6 +65,12 @@ export const ls = async () => {
   }
 };
 
+/**
+ * Prints the content of a file to the console.
+ * @param {string} path - The path of the file to read.
+ * @returns {void} Nothing.
+ * @throws {Error} If the path is invalid or the read fails.
+ */
 export const cat = (path) => {
   if (!path) return logError(INVALID_INPUT);
 
@@ -65,6 +87,12 @@ export const cat = (path) => {
   }
 };
 
+/**
+ * Creates a new file with the given name.
+ * @param {string} name - The name of the file to create.
+ * @returns {Promise<void>} A promise that resolves when the file is created.
+ * @throws {Error} If the name is invalid or the creation fails.
+ */
 export const add = async (name) => {
   if (!name) return logError(INVALID_INPUT);
 
@@ -76,6 +104,13 @@ export const add = async (name) => {
   }
 };
 
+/**
+ * Renames a file from the old path to the new path.
+ * @param {string} oldPath - The old path of the file to rename.
+ * @param {string} newPath - The new path of the file to rename.
+ * @returns {Promise<void>} A promise that resolves when the file is renamed.
+ * @throws {Error} If the paths are invalid or the rename fails.
+ */
 export const rn = async (oldPath, newPath) => {
   if (!oldPath || !newPath) return logError(INVALID_INPUT);
 
@@ -88,6 +123,13 @@ export const rn = async (oldPath, newPath) => {
   }
 };
 
+/**
+ * Copies a file from the old path to the new path.
+ * @param {string} oldPath - The old path of the file to copy.
+ * @param {string} newPath - The new path of the file to copy.
+ * @returns {stream.Writable} A writable stream that represents the copied file.
+ * @throws {Error} If the paths are invalid or the copy fails.
+ */
 export const cp = (oldPath, newPath) => {
   if (!oldPath || !newPath) return logError(INVALID_INPUT);
 
@@ -105,6 +147,12 @@ export const cp = (oldPath, newPath) => {
   }
 };
 
+/**
+ * Removes a file or directory at the specified path.
+ * @param {string} path - The path of the file or directory to remove.
+ * @returns {Promise<void>} A promise that resolves when the removal is done.
+ * @throws {Error} If the path is invalid or the removal fails.
+ */
 export const rm = async (path) => {
   if (!path) return logError(INVALID_INPUT);
 
@@ -115,6 +163,13 @@ export const rm = async (path) => {
   }
 };
 
+/**
+ * Moves a file or directory from the old path to the new path.
+ * @param {string} oldPath - The old path of the file or directory to move.
+ * @param {string} newPath - The new path of the file or directory to move.
+ * @returns {void} Nothing.
+ * @throws {Error} If the paths are invalid or the move fails.
+ */
 export const mv = (oldPath, newPath) => {
   if (!oldPath || !newPath) return logError(INVALID_INPUT);
 
