@@ -10,6 +10,7 @@ import paint from './lib/helpers/paint.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import logError from './views/logError.js';
 import { INVALID_INPUT, WAITING } from './lib/const/const.js';
+import logWait from './views/logWait.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -38,9 +39,9 @@ rl.on('line', (line) => {
   }
 
   logWorkingDirPath();
-  console.log(paint(WAITING, 'cyan', 'italic'));
+  logWait();
 });
 
 logGreetings();
 logWorkingDirPath();
-console.log(paint(WAITING, 'cyan', 'italic'));
+logWait();
