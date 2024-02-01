@@ -8,21 +8,26 @@ import { INVALID_INPUT } from '../lib/const/const.js';
 /**
  * Computes the SHA-256 hash of a file and prints it to the console.
  * @param {string} path - The path of the file to hash.
- * @returns {void} Nothing.
+ * @returns {Promise<void>} Nothing.
  * @throws {Error} If the path is invalid or the hashing fails.
  */
-export const hash = (path) => {
+export const hash = async (path) => {
   if (!path) return logError(INVALID_INPUT);
 
   try {
-    createReadStream(resolve(path))
-        .on('error', () => logError())
-        .pipe(
-            createHash('sha256')
-        )
-        .setEncoding('hex')
-        .on('data', (data) => console.log(data))
-        .on('error', () => logError());
+    return new Promise(res =>
+        createReadStream(resolve(path))
+            .on('error', () => {
+              logError();
+              res();
+            })
+            .pipe(
+                createHash('sha256')
+            )
+            .setEncoding('hex')
+            .on('data', (data) => console.log(data))
+            .on('error', () => logError())
+            .on('close', res));
   } catch (e) {
     logError();
   }
