@@ -1,10 +1,10 @@
 import { basename, join, resolve } from 'path';
 import fs, { open, readdir, rename, } from 'fs/promises';
 import { chdir, cwd } from 'process';
-import { createReadStream, createWriteStream } from 'node:fs';
 import logError from '../views/logError.js';
 import paint from '../lib/helpers/paint.js';
 import { INVALID_INPUT } from '../lib/const/const.js';
+import { createReadStream, createWriteStream } from 'fs';
 
 export const up = () => {
   const dirUp = join(cwd(), '..');
@@ -69,7 +69,8 @@ export const add = async (name) => {
   if (!name) return logError(INVALID_INPUT);
 
   try {
-    await open(name, 'w');
+    const fileHandle = await open(name, 'w');
+    await fileHandle.close();
   } catch (e) {
     logError();
   }
@@ -121,7 +122,7 @@ export const mv = (oldPath, newPath) => {
   const newDest = resolve(newPath);
 
   cp(oldDest, newDest)
-      ?.on('finish', () => {
+      ?.on('finish', async () => {
         rm(oldPath);
       });
 };
