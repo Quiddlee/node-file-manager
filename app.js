@@ -1,4 +1,3 @@
-import * as os from 'os';
 import readline from 'readline';
 import * as externalController from './controllers/externalController.js';
 import * as filesController from './controllers/filesController.js';
@@ -7,13 +6,13 @@ import { INVALID_INPUT } from './lib/const/const.js';
 import getCmdPart from './lib/helpers/getCmdPart.js';
 import logError from './views/logError.js';
 import logExit from './views/logExit.js';
-import logGreetings from './views/logGrettings.js';
 import logWait from './views/logWait.js';
 import logWorkingDirPath from './views/logWorkingDirPath.js';
+import os from 'os';
+import logGreetings from './views/logGrettings.js';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-process.chdir(os.homedir());
 process.on('exit', logExit);
 rl.on('line', (line) => {
   const userFilesCommand = getCmdPart(line);
@@ -41,6 +40,7 @@ rl.on('line', (line) => {
   logWait();
 });
 
+process.chdir(os.homedir());
 logGreetings();
 logWorkingDirPath();
 logWait();
