@@ -14,7 +14,7 @@ import logGreetings from './views/logGrettings.js';
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 process.on('exit', logExit);
-rl.on('line', (line) => {
+rl.on('line', async (line) => {
   const userFilesCommand = getCmdPart(line);
   const filesOperation = filesController[userFilesCommand];
 
@@ -31,9 +31,9 @@ rl.on('line', (line) => {
   if (!filesOperation && !osOperation && !externalOperation) {
     logError(INVALID_INPUT);
   } else {
-    filesOperation?.(oldPath, newPath);
+    await filesOperation?.(oldPath, newPath);
     osOperation?.();
-    externalOperation?.(oldPath, newPath);
+    await externalOperation?.(oldPath, newPath);
   }
 
   logWorkingDirPath();

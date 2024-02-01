@@ -76,11 +76,14 @@ export const cat = (path) => {
   try {
     const filePath = resolve(path);
 
-    createReadStream(filePath, { encoding: 'utf-8' })
-        .on('data', (chunk) => {
-          console.log(paint(chunk.toString(), 'green', 'italic'));
-        })
-        .on('error', () => logError());
+    return new Promise((resolve) => {
+      createReadStream(filePath, { encoding: 'utf-8' })
+      .on('data', (chunk) => {
+        console.log(paint(chunk.toString(), 'green', 'italic'));
+        resolve();
+      })
+      .on('error', () => logError());
+     });
   } catch (e) {
     logError();
   }
