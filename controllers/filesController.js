@@ -1,4 +1,4 @@
-import { basename, dirname, join, resolve } from 'path';
+import { basename, join, resolve } from 'path';
 import fs, { open, readdir, rename, } from 'fs/promises';
 import { chdir, cwd } from 'process';
 import logError from '../views/logError.js';
@@ -11,7 +11,6 @@ import { createReadStream, createWriteStream } from 'fs';
  * @example up() - home/folder/folder2 -> home/folder
  */
 export const up = () => {
-  if (dirname('/') === '/' || dirname('C:\\') === 'C:\\') return;
   const dirUp = join(cwd(), '..');
 
   try {
