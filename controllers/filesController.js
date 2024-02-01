@@ -67,7 +67,7 @@ export const ls = async () => {
 /**
  * Prints the content of a file to the console.
  * @param {string} path - The path of the file to read.
- * @returns {void} Nothing.
+ * @returns {Promise<void> | void} Nothing.
  * @throws {Error} If the path is invalid or the read fails.
  */
 export const cat = (path) => {
@@ -76,14 +76,11 @@ export const cat = (path) => {
   try {
     const filePath = resolve(path);
 
-    return new Promise((resolve) => {
-      createReadStream(filePath, { encoding: 'utf-8' })
-      .on('data', (chunk) => {
-        console.log(paint(chunk.toString(), 'green', 'italic'));
-        resolve();
-      })
-      .on('error', () => logError());
-     });
+    return new Promise((resolve) =>
+        createReadStream(filePath, { encoding: 'utf-8' })
+            .on('data', (chunk) => console.log(paint(chunk.toString(), 'green', 'italic')))
+            .on('error', () => logError())
+            .on('close', resolve));
   } catch (e) {
     logError();
   }
