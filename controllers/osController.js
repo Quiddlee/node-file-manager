@@ -24,7 +24,7 @@ export const cpus = () => {
     };
   });
 
-  const half = Math.floor(tableData.length / 2); // TODO: handle different systems
+  const half = Math.floor(tableData.length / 2); 
   tableData.at(half)['Amount of CPUS'] = cpuData.length;
 
   console.table(tableData);
